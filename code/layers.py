@@ -6,27 +6,6 @@ from torch_geometric.nn import MessagePassing
 from torch_geometric.nn.inits import glorot
 
 
-class GraphConv(nn.Module):
-    def __init__(self,in_features: int, out_features: int, n_heads: int,
-                 residual: bool, dropout: float = 0.6, slope: float = 0.2, activation: nn.Module = nn.ELU()):
-        super(GraphConv, self).__init__()
-        self.dropout = nn.Dropout(dropout)
-        self.activation = activation
-        self.w = nn.Linear(in_features, out_features)
-        nn.init.xavier_uniform_(self.w.weight)
-        self.bias = False
-        if self.bias:
-            nn.init.zeros_(self.w.bias)
-
-    def forward(self, adj, x):
-        x = self.dropout(x)
-        x = adj.mm(x)
-        x = self.w(x)
-        if self.activation:
-            return self.activation(x)
-        else:
-            return x
-
 class GraphAttentionLayer(MessagePassing):
     def __init__(self, in_features: int, out_features: int, n_heads: int,
                  residual: bool, dropout: float = 0.6, slope: float = 0.2, activation: nn.Module = nn.ELU()):
