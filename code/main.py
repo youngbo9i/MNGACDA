@@ -35,10 +35,10 @@ def main(edge_idx_dict, n_drug, n_cir, drug_sim, cir_sim, args_config, device):
         n_drug + n_cir, num_hidden_layers, num_embedding_features, num_heads_per_layer,
         n_drug, n_cir, add_layer_attn, residual).to(device)
     num_u, num_v = n_drug, n_cir
-    optimizer = optim.Adam(model.parameters(), lr=lr, weight_decay=weight_decay)
+    optimizer = optim.AdamW(model.parameters(), lr=lr, weight_decay=weight_decay)
     base_lr = 5e-5
     scheduler = optim.lr_scheduler.CyclicLR(optimizer, base_lr, max_lr=lr, step_size_up=200,
-                                            step_size_down=200, mode='exp_range', gamma=0.995, scale_fn=None,
+                                            step_size_down=200, mode='exp_range', gamma=0.99, scale_fn=None,
                                             cycle_momentum=False, last_epoch=-1)
     het_mat = construct_het_mat(temp_drug_cir, cir_sim, drug_sim)
     adj_mat = construct_adj_mat(temp_drug_cir)
@@ -72,13 +72,13 @@ if __name__ == '__main__':
 
     hyperparam_dict = {
         'kfolds':5,
-        'num_heads_per_layer': 2,
+        'num_heads_per_layer': 3,
         'num_embedding_features':128,
-        'num_hidden_layers': 4,
+        'num_hidden_layers': 2,
         'num_epoch': 1000,
         'knn_nums':25,
         'lr': 1e-3,
-        'weight_decay': 5e-4,
+        'weight_decay': 5e-3,
         'add_layer_attn': True,
         'residual': True,
     }

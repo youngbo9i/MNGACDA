@@ -249,12 +249,12 @@ def load_data():
         cir_sim = cir_sim - np.diag(diag)
 
     # get the edge idx of positives samplese
-    rng = np.random.default_rng(1)
+    rng = np.random.default_rng(10086)
     pos_samples, edge_attr = dense2sparse(drug_cir_ass)
     pos_samples_shuffled = rng.permutation(pos_samples, axis=1)
 
     # get the edge index of negative samples
-    rng = np.random.default_rng(1)
+    rng = np.random.default_rng(10086)
     neg_samples = np.where(drug_cir_ass == 0)
     neg_samples_shuffled = rng.permutation(neg_samples, axis=1)[:, :pos_samples_shuffled.shape[1]]
     # split positive samples into training message samples, training supervision samples, test samples
