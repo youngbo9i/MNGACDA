@@ -62,6 +62,7 @@ def main(edge_idx_dict, n_drug, n_cir, drug_sim, cir_sim, args_config, device):
     with torch.no_grad():
         pred_mat = model(het_mat_device, edge_idx_device, drug_sim, edge_idx_drug, cir_sim,
                          edge_idx_cir).cpu().reshape(num_u, num_v)
+        metrics = calculate_evaluation_metrics(pred_mat.detach(), pos_edges, neg_edges)
         return pred_mat
 
 
